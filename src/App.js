@@ -1,23 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import ComponentOne from "./components/ComponentOne"; //normal import
+import React, { Suspense, useState } from "react";
+const ComponentTwo = React.lazy(() => import("./components/ComponentTwo")); // lazy loaded import
 
 function App() {
+  const [isShow, setIsShow] = useState(false);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ComponentOne />
+      {isShow && (
+        <Suspense fallback={<h1>Loading....</h1>}>
+          <ComponentTwo />
+        </Suspense>
+      )}
+
+      <button
+        onClick={() => {
+          setIsShow(true);
+        }}
+      >
+        Update
+      </button>
     </div>
   );
 }
